@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="/static/css/bootstrap-3.0.0.min.css">
+  <link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme-3.0.0.css">
+  <link type="text/css" rel="stylesheet" href="/static/css/timeline.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Visualization</h1>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 timeline-container">
+            <div id="my-timeline"></div>
+        </div>
+    </div>
+</div>
+
+<script type = "text/javascript" src="/static/js/jquery.min.js"></script>
+<script type = "text/javascript" src="/static/js/bootstrap-3.0.0.min.js"></script>
+
+
+
+<script type = "text/javascript" src="/static/js/storyjs-embed.js"></script>
+<script>
+    createTimeline = function(parentNode) {
+        $('#my-timeline').html('');
+        if (parentNode) {
+            createStoryJS({
+                type:       'timeline',
+                width:      '1000',
+                height:     '600',
+                source:     '{{ url_for('json_timeline') }}?parent='+parentNode,
+                lang:       '/static/js/locale/pt-br.js',
+                embed_id:   'my-timeline'
+            });
+        } else {
+            createStoryJS({
+                type:       'timeline',
+                width:      '1000',
+                height:     '600',
+                source:     '{{ url_for('json_timeline') }}',
+                lang:       '/static/js/locale/pt-br.js',
+                embed_id:   'my-timeline'
+            });
+        }
+    }
+    $(document).ready(function() {
+        createTimeline();
+    });
+</script>
+</body>
+</html>

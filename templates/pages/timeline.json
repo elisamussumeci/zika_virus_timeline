@@ -1,0 +1,41 @@
+storyjs_jsonp_data ={    "timeline": 
+    {
+        "headline":"Timeline MediaCloud",
+        "text":"<p>Linha do tempo com artigos sobre {{busca}}</p>",
+        "asset": {
+            "media":"",
+            "thumbnail":"",
+            "credit":"Elisa Mussumeci"
+        },
+        "date":  [
+        {% for art in articles %}
+            {% if not loop.last %}
+            {
+                "startDate":"{{art.published}}",
+                "endDate":"{{art.published}}",
+                "headline":"{{art.title|e|title}}",
+                "text":"{{art.summary|tojson|forceescape|truncate}}",
+                "asset": {
+                    "media":"{{art.link}}",
+                    "thumbnail":"",
+                    "credit":"{{art.author|forceescape}}"
+                }
+            },
+            {%else%}
+            {
+                "startDate":"{{art.published}}",
+                "endDate":"{{art.published}}",
+                "headline":"{{art.title|e}}",
+                "text":"{{art.summary|tojson|forceescape|truncate}}",
+                "asset": {
+                    "media":"{{art.link}}",
+                    "thumbnail":"",
+                    "credit":"{{art.author|forceescape}}"
+                }
+            }
+            {% endif %}
+        {% endfor %}
+        ]
+    }
+}
+    
