@@ -10,25 +10,35 @@ APP_STATIC = os.path.join(APP_ROOT, 'static')
 print APP_STATIC
 
 
-def fix_empty_summary(art):
-    if 'summary' not in art or art['summary'] == "":
-        art['summary'] = " "
+def fix_abstract(art):
+    if 'Abstract' not in art['MedlineCitation']['Article'] or art['MedlineCitation']['Article']['Abstract'] == "":
+        art['MedlineCitation']['Article']['Abstract'] = {'AbstractText':  " "}
+    else:
+        art['MedlineCitation']['Article']['Abstract']['AbstractText'] = art['MedlineCitation']['Article']['Abstract']['AbstractText'][0]
+
     return art
 
 @app.route("/")
 def root():
     return render_template('pages/indextimeline.html')
 
-@app.route('/data.jsonp')
+@app.route('/pub1.jsonp')
 def json_timeline():
     data = ''
-    with open(os.path.join(APP_STATIC, 'data.json')) as f:
+    with open(os.path.join(APP_STATIC, 'pub1.json')) as f:
         data = data + f.read()
     articles = json.loads(data)
 
     for art in articles:
-        art['published'] = datetime.date.fromtimestamp(art['published']['$date']/1000.).strftime("%Y,%m,%d")
-        art = fix_empty_summary(art)
+        art = fix_abstract(art)
+        date = art['MedlineCitation']['Article']['ArticleDate']
+        if date == []:
+            art['MedlineCitation']['Article']['ArticleDate'] = datetime.date(2016, 5, 1)
+
+        else:
+            art['MedlineCitation']['Article']['ArticleDate'] = datetime.date(int(date[0].get('Year', 2016)),
+                                                                             int(date[0].get('Month', 1)),
+                                                                             int(date[0].get('Day', 1))).strftime("%Y,%m,%d")
 
     dados = render_template('pages/timeline.json', busca='Zika Virus', articles=articles)
     return Response(dados, mimetype='application/json')

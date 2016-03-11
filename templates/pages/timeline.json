@@ -5,32 +5,32 @@ storyjs_jsonp_data ={    "timeline":
         "asset": {
             "media":"",
             "thumbnail":"",
-            "credit":"Elisa Mussumeci"
+            "credit":"NAMD"
         },
         "date":  [
         {% for art in articles %}
             {% if not loop.last %}
             {
-                "startDate":"{{art.published}}",
-                "endDate":"{{art.published}}",
-                "headline":"{{art.title|e|title}}",
-                "text":"{{art.summary|tojson|forceescape|truncate}}",
+                "startDate":"{{art.MedlineCitation.Article.ArticleDate}}",
+                "endDate":"{{art.MedlineCitation.Article.ArticleDate}}",
+                "headline":"{{art.MedlineCitation.Article.ArticleTitle}}",
+                "text":"{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}",
                 "asset": {
-                    "media":"{{art.link}}",
+                    "media":"",
                     "thumbnail":"",
-                    "credit":"{{art.author|forceescape}}"
+                    "credit":""
                 }
             },
             {%else%}
             {
-                "startDate":"{{art.published}}",
-                "endDate":"{{art.published}}",
-                "headline":"{{art.title|e}}",
-                "text":"{{art.summary|tojson|forceescape|truncate}}",
+                "startDate":"{{art.MedlineCitation.Article.ArticleDate}}",
+                "endDate":"{{art.MedlineCitation.Article.ArticleDate}}",
+                "headline":"{{art.MedlineCitation.Article.ArticleTitle}}",
+                "text":"{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}",
                 "asset": {
-                    "media":"{{art.link}}",
+                    "media":"",
                     "thumbnail":"",
-                    "credit":"{{art.author|forceescape}}"
+                    "credit":""
                 }
             }
             {% endif %}
