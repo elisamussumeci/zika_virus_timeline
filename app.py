@@ -2,13 +2,13 @@ from flask import Flask, render_template, Response
 import os
 import datetime
 import json
+import pymongo
 
 app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC = os.path.join(APP_ROOT, 'static')
 
-print APP_STATIC
-
+mongo_client = pymongo.MongoClient('172.16.4.51', 27017)
 
 def fix_abstract(art):
     if 'Abstract' not in art['MedlineCitation']['Article'] or art['MedlineCitation']['Article']['Abstract'] == "":
@@ -18,16 +18,16 @@ def fix_abstract(art):
 
     return art
 
+
 @app.route("/")
 def root():
     return render_template('pages/indextimeline.html')
 
+
 @app.route('/pub1.jsonp')
 def json_timeline():
-    data = ''
-    with open(os.path.join(APP_STATIC, 'pub1.json')) as f:
-        data = data + f.read()
-    articles = json.loads(data)
+    col = mongo_client.pubmed.articles
+    articles = list(col.find())
 
     for art in articles:
         art = fix_abstract(art)
