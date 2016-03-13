@@ -11,8 +11,8 @@ storyjs_jsonp_data ={    "timeline":
         {% for art in articles %}
             {% if not loop.last %}
             {
-                "startDate":"{{art.MedlineCitation.Article.ArticleDate}}",
-                "endDate":"{{art.MedlineCitation.Article.ArticleDate}}",
+                "startDate":"{{art.PubDatetime}}",
+                "endDate":"{{art.PubDatetime}}",
                 "headline":"{{art.MedlineCitation.Article.ArticleTitle}}",
                 "text":"{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}",
                 "asset": {
@@ -23,8 +23,8 @@ storyjs_jsonp_data ={    "timeline":
             },
             {%else%}
             {
-                "startDate":"{{art.MedlineCitation.Article.ArticleDate}}",
-                "endDate":"{{art.MedlineCitation.Article.ArticleDate}}",
+                "startDate":"{{art.PubDatetime}}",
+                "endDate":"{{art.PubDatetime}}",
                 "headline":"{{art.MedlineCitation.Article.ArticleTitle}}",
                 "text":"{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}",
                 "asset": {

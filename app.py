@@ -31,14 +31,14 @@ def json_timeline():
 
     for art in articles:
         art = fix_abstract(art)
-        date = art['MedlineCitation']['Article']['ArticleDate']
+        date = art['MedlineCitation']['Article']['Journal']['JournalIssue']['PubDate']
         if date == []:
-            art['MedlineCitation']['Article']['ArticleDate'] = datetime.date(2016, 5, 1)
+            art['PubDatetime'] = datetime.date(2016, 5, 1)
 
         else:
-            art['MedlineCitation']['Article']['ArticleDate'] = datetime.date(int(date[0].get('Year', 2016)),
-                                                                             int(date[0].get('Month', 1)),
-                                                                             int(date[0].get('Day', 1))).strftime("%Y,%m,%d")
+            art['PubDatetime'] = datetime.date(int(date[0].get('Year', 2016)),
+                                               int(date[0].get('Month', 1)),
+                                               int(date[0].get('Day', 1))).strftime("%Y,%m,%d")
 
     dados = render_template('pages/timeline.json', busca='Zika Virus', articles=articles)
     return Response(dados, mimetype='application/json')
