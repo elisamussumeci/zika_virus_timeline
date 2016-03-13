@@ -1,6 +1,6 @@
 storyjs_jsonp_data ={    "timeline": 
     {
-        "headline":"Timeline MediaCloud",
+        "headline":"Timeline de Publicações",
         "text":"<p>Linha do tempo com artigos sobre {{busca}}</p>",
         "asset": {
             "media":"",
