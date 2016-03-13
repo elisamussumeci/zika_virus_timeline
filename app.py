@@ -3,6 +3,7 @@ import os
 import datetime
 import json
 import pymongo
+import calendar
 
 app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
@@ -18,6 +19,7 @@ def fix_abstract(art):
 
     return art
 
+month_calendar = dict((v,k) for k,v in enumerate(calendar.month_abbr))
 
 @app.route("/")
 def root():
@@ -36,9 +38,9 @@ def json_timeline():
             art['PubDatetime'] = datetime.date(2016, 5, 1)
 
         else:
-            art['PubDatetime'] = datetime.date(int(date[0].get('Year', 2016)),
-                                               int(date[0].get('Month', 1)),
-                                               int(date[0].get('Day', 1))).strftime("%Y,%m,%d")
+            art['PubDatetime'] = datetime.date(int(date.get('Year', 2016)),
+                                               month_calendar[date.get('Month', 'Jan')],
+                                               int(date.get('Day', 1))).strftime("%Y,%m,%d")
 
     dados = render_template('pages/timeline.json', busca='Zika Virus', articles=articles)
     return Response(dados, mimetype='application/json')
