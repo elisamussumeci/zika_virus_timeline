@@ -4,7 +4,7 @@ RUN apt-get update
 RUN apt-get install -y git python-pip
 
 # Clone code
-RUN git clone -b deploy https://github.com/elisamussumeci/zika_virus_timeline.git /srv/zika_virus_timeline/
+RUN git clone https://github.com/elisamussumeci/zika_virus_timeline.git /srv/zika_virus_timeline/
 
 # Install python deps
 # We need --no-clean because of the way Docker.io's filesystem works. When pip
