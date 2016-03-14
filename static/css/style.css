@@ -1,0 +1,111 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Lato', sans-serif;
+}
+
+h2 a:hover {
+  text-decoration: none;
+}
+
+.title-section {
+  text-align: center;
+  margin: 30px 0;
+}
+
+hr {
+  margin-top: 30px;
+}
+
+.navbar {
+  background-color: #003e7e;
+  background-image: none;
+}
+
+.timeline-container {
+  margin-left: 50px;
+}
+
+.circle-vis-container {
+  height: 550px;
+  position: relative;
+}
+
+.circle-vis {
+  height: 640px;
+  width: 700px;
+  position: relative;
+}
+
+.circle-vis path.arc {
+  cursor: move;
+  fill: #fff;
+}
+
+.circle-vis .node {
+  font-size: 10px;
+}
+
+.circle-vis .node:hover,
+.circle-vis .node.target,
+.circle-vis .node.source {
+  font-weight: bold;
+}
+
+
+.circle-vis .node:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.circle-vis .node.source {
+  fill: blue;
+}
+
+.circle-vis .node.target {
+  fill: rgb(216, 56, 105);
+}
+
+.circle-vis .link {
+  fill: none;
+  stroke: #1f77b4;
+  stroke-opacity: 0.6;
+  pointer-events: none;
+}
+
+.circle-vis .link.source,
+.circle-vis .link.target {
+  stroke-opacity: 1;
+  stroke-width: 1px;
+  opacity: 1;
+}
+
+.circle-vis .link.source {
+  stroke: rgb(216, 56, 105);
+}
+
+.circle-vis .link.target {
+  stroke: #1f77b4;
+}
+
+.circle-vis .node.opaque,
+.circle-vis .link.opaque {
+  opacity: 0.1;
+}
+
+.circle-vis .node.out-time-frame,
+.circle-vis .link.out-time-frame {
+  opacity: 0.1 !important;
+}
+
+.popover-content {
+  font-size: 12px !important;
+}
+
+#time-slider {
+  margin-bottom: 50px;
+}
