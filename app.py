@@ -53,7 +53,7 @@ def json_bundle():
     return json.dumps(citations_dict), 200
 
 
-@app.route('/pub1.jsonp')
+@app.route('/pub1.json')
 def json_timeline():
     col = mongo_client.pubmed.articles
     articles = list(col.find())
@@ -65,9 +65,9 @@ def json_timeline():
             art['PubDatetime'] = datetime.date(2016, 5, 1)
 
         else:
-            art['PubDatetime'] = datetime.date(int(date.get('Year', 2016)),
-                                               month_calendar[date.get('Month', 'Jan')],
-                                               int(date.get('Day', 1))).strftime("%Y,%m,%d")
+            art['PubDatetime'] = {'Year': int(date.get('Year', 2016)),
+                                  'Month': month_calendar[date.get('Month', 'Jan')],
+                                  'Day': int(date.get('Day', 1))}
 
     dados = render_template('pages/timeline.json', busca='Zika Virus', articles=articles)
     return Response(dados, mimetype='application/json')

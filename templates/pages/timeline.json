@@ -1,41 +1,54 @@
-storyjs_jsonp_data ={    "timeline": 
-    {
-        "headline":"Timeline de Publicações",
-        "text":"<p>Linha do tempo com artigos sobre {{busca}}</p>",
-        "asset": {
-            "media":"",
-            "thumbnail":"",
-            "credit":"NAMD"
-        },
-        "date":  [
+{
+    "title": {
+            "media": {
+                "credit": "NAMD"
+            },
+            "text":{
+                "headline": "Timeline de Publicações",
+                "text": "Linha do tempo com artigos sobre {{busca}}"
+            }
+
+    },
+    "events":  [
         {% for art in articles %}
             {% if not loop.last %}
             {
-                "startDate":"{{art.PubDatetime}}",
-                "endDate":"{{art.PubDatetime}}",
-                "headline":"{{art.MedlineCitation.Article.ArticleTitle}}",
-                "text":"{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}",
-                "asset": {
-                    "media":"",
-                    "thumbnail":"",
-                    "credit":""
+                "start_date": {
+                    "year": "{{art.PubDatetime.Year}}",
+                    "month": "{{art.PubDatetime.Month}}",
+                    "day": "{{art.PubDatetime.Day}}"
+                },
+                "end_date": {
+                    "year": "{{art.PubDatetime.Year}}",
+                    "month": "{{art.PubDatetime.Month}}",
+                    "day": "{{art.PubDatetime.Day}}"
+                },
+                "text": {
+                    "headline": "{{art.MedlineCitation.Article.ArticleTitle}}",
+                    "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
                 }
             },
+
             {%else%}
             {
-                "startDate":"{{art.PubDatetime}}",
-                "endDate":"{{art.PubDatetime}}",
-                "headline":"{{art.MedlineCitation.Article.ArticleTitle}}",
-                "text":"{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}",
-                "asset": {
-                    "media":"",
-                    "thumbnail":"",
-                    "credit":""
+                "start_date": {
+                    "year": "{{art.PubDatetime.Year}}",
+                    "month": "{{art.PubDatetime.Month}}",
+                    "day": "{{art.PubDatetime.Day}}"
+                },
+                "end_date": {
+                    "year": "{{art.PubDatetime.Year}}",
+                    "month": "{{art.PubDatetime.Month}}",
+                    "day": "{{art.PubDatetime.Day}}"
+                },
+                "text": {
+                    "headline": "{{art.MedlineCitation.Article.ArticleTitle}}",
+                    "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
                 }
             }
             {% endif %}
         {% endfor %}
-        ]
-    }
+    ]
 }
-    
+
+
