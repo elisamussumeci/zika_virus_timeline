@@ -30,6 +30,10 @@ hr {
   margin-left: 50px;
 }
 
+#my-timeline {
+  height: 500px;
+}
+
 .circle-vis-container {
   height: 550px;
   position: relative;
