@@ -193,7 +193,7 @@ function addArticle(articles, articlePMID, rootCitation) {
     if (!articlesMap[articlePMID] && article) {
         var obj = {
             id: articlePMID,
-            name: article.title,
+            name: article.year.concat(' - ',article.title),
             citedBy: article.citedby,
             children: [],
             parent: rootCitation

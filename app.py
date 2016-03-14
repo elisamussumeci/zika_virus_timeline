@@ -45,8 +45,10 @@ def json_bundle():
             if exists is not None:
                 citedby.append(cited)
 
+        date = article['MedlineCitation']['Article']['Journal']['JournalIssue']['PubDate']
         citations_dict[relation['PMID']] = {'title': article['MedlineCitation']['Article']['ArticleTitle'],
-                                            'citedby': citedby}
+                                            'citedby': citedby,
+                                            'year': date.get('Year', '--')}
 
     return json.dumps(citations_dict), 200
 
