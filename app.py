@@ -9,7 +9,7 @@ app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC = os.path.join(APP_ROOT, 'static')
 
-mongo_client = pymongo.MongoClient('localhost', 27017)
+mongo_client = pymongo.MongoClient('172.16.4.51', 27017)
 
 
 def fix_abstract(art):
