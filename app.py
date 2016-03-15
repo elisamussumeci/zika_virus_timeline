@@ -33,9 +33,9 @@ def get_link(art):
         art['link'] = None
     return art
 
-
 @app.route("/")
-def root():
+@app.route("/<virus>")
+def root(virus="zika"):
     return render_template('pages/indextimeline.html')
 
 @app.route('/api/citations')
@@ -60,7 +60,8 @@ def json_bundle():
         date = article['MedlineCitation']['Article']['Journal']['JournalIssue']['PubDate']
         citations_dict[relation['PMID']] = {'title': article['MedlineCitation']['Article']['ArticleTitle'],
                                             'citedby': citedby,
-                                            'year': date.get('Year', None)}
+                                            'year': date.get('Year', None),
+                                            'link': get_link(article)['link']}
 
     return json.dumps(citations_dict), 200
 

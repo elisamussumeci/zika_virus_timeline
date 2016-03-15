@@ -42,6 +42,7 @@ var svg = div.append("svg:svg")
   .append("svg:g")
     .attr("transform", "translate(" + rx + "," + ry + ")");
 
+
 var selectedArticle = null;
 
 var generate_visualization = function(rootCitation, citationsLinks){
@@ -86,14 +87,16 @@ var generate_visualization = function(rootCitation, citationsLinks){
   for (var i = nodes.length - 1; i >= 0; i--) {
       var d = nodes[i];
       var hostnameInfo = '<small>'+d.hostname+'</small>';
-      var articleLinkElem = '<a href="'+d.link+'"><br/>'+d.title+'</a>';
+      var articleLinkElem = '<a href="'+d.link+'" target="_blank"><br/>'+d.name+'</a>';
       var popoverTitle = hostnameInfo + articleLinkElem;
       $('#node-'+d.id+' text').popover({
         html: true,
-        content: d.name,
+        content: articleLinkElem,
+        selector:  true,
         container: 'body',
         placement: 'auto',
-        trigger: 'hover'
+        trigger: 'click hover',
+        delay: {show: 50, hide: 400}
       }).on('click', function(){
         var self = $(this);
         var PMID = self.parent().attr('id').replace('node-', '');
@@ -108,7 +111,7 @@ var generate_visualization = function(rootCitation, citationsLinks){
 
         timeline.goToId(PMID);
 
-        self.popover('show');
+//        self.popover('show');
       });
     }
 };
@@ -245,6 +248,7 @@ function addArticle(articles, articlePMID, rootCitation) {
             citedBy: article.citedby,
             year: year,
             children: [],
+            link: article.link,
             parent: articleYears[year]
         }
 

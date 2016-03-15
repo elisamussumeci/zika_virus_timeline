@@ -30,6 +30,16 @@ hr {
   margin-left: 50px;
 }
 
+.tl-timeline a{
+  color: black;
+}
+
+.tl-timeline a:hover {
+    text-decoration: none;
+    color: #bbb
+}
+
+
 #my-timeline {
   height: 500px;
 }
