@@ -22,6 +22,18 @@ def fix_abstract(art):
 
 month_calendar = dict((v,k) for k,v in enumerate(calendar.month_abbr))
 
+
+def get_link(art):
+    article_id_list = art['PubmedData']['ArticleIdList']
+    article_id_list.sort(key=len)
+
+    if '/' in article_id_list[-1]:
+        art['link'] = 'http://dx.doi.org/'+article_id_list[-1]
+    else:
+        art['link'] = None
+    return art
+
+
 @app.route("/")
 def root():
     return render_template('pages/indextimeline.html')
@@ -66,6 +78,8 @@ def json_timeline():
             art['PubDatetime'] = {'Year': int(date['Year']),
                                   'Month': month_calendar[date.get('Month', 'Jan')],
                                   'Day': int(date.get('Day', 1))}
+
+            art = get_link(art)
             valid_articles.append(art)
 
     dados = render_template('pages/timeline.json', busca='Zika Virus', articles=valid_articles)

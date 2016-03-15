@@ -23,10 +23,19 @@
                     "month": "{{art.PubDatetime.Month}}",
                     "day": "{{art.PubDatetime.Day}}"
                 },
-                "text": {
-                    "headline": "{{art.MedlineCitation.Article.ArticleTitle}}",
-                    "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
-                },
+                {%if art.link is none %}
+                    "text": {
+                        "headline": "{{art.MedlineCitation.Article.ArticleTitle}}",
+                        "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
+                    },
+                {%else%}
+                    "text": {
+                        "headline": "<a href={{art.link}} target='_blank'>{{art.MedlineCitation.Article.ArticleTitle}}</a>",
+                        "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
+                    },
+                {% endif %}
+
+                "autolink": true,
                 "unique_id": "{{art.MedlineCitation.PMID}}"
             },
 
@@ -42,10 +51,17 @@
                     "month": "{{art.PubDatetime.Month}}",
                     "day": "{{art.PubDatetime.Day}}"
                 },
-                "text": {
-                    "headline": "{{art.MedlineCitation.Article.ArticleTitle}}",
-                    "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
-                },
+                {%if art.link is none %}
+                    "text": {
+                        "headline": "{{art.MedlineCitation.Article.ArticleTitle}}",
+                        "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
+                    },
+                {%else%}
+                    "text": {
+                        "headline": "<a href={{art.link}} target='_blank'>{{art.MedlineCitation.Article.ArticleTitle}}</a>",
+                        "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
+                    },
+                {% endif %}
                 "unique_id": "{{art.MedlineCitation.PMID}}"
             }
             {% endif %}
