@@ -48,28 +48,27 @@ def json_bundle():
         date = article['MedlineCitation']['Article']['Journal']['JournalIssue']['PubDate']
         citations_dict[relation['PMID']] = {'title': article['MedlineCitation']['Article']['ArticleTitle'],
                                             'citedby': citedby,
-                                            'year': date.get('Year', '--')}
+                                            'year': date.get('Year', None)}
 
     return json.dumps(citations_dict), 200
 
 
-@app.route('/pub1.json')
+@app.route('/api/publications')
 def json_timeline():
     col = mongo_client.pubmed.articles
     articles = list(col.find())
 
+    valid_articles = []
     for art in articles:
-        art = fix_abstract(art)
         date = art['MedlineCitation']['Article']['Journal']['JournalIssue']['PubDate']
-        if date == []:
-            art['PubDatetime'] = datetime.date(2016, 5, 1)
-
-        else:
-            art['PubDatetime'] = {'Year': int(date.get('Year', 2016)),
+        if 'Year' in date:
+            art = fix_abstract(art)
+            art['PubDatetime'] = {'Year': int(date['Year']),
                                   'Month': month_calendar[date.get('Month', 'Jan')],
                                   'Day': int(date.get('Day', 1))}
+            valid_articles.append(art)
 
-    dados = render_template('pages/timeline.json', busca='Zika Virus', articles=articles)
+    dados = render_template('pages/timeline.json', busca='Zika Virus', articles=valid_articles)
     return Response(dados, mimetype='application/json')
 
 @app.errorhandler(500)

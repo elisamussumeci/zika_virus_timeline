@@ -42,6 +42,8 @@ var svg = div.append("svg:svg")
   .append("svg:g")
     .attr("transform", "translate(" + rx + "," + ry + ")");
 
+var selectedArticle = null;
+
 var generate_visualization = function(rootCitation, citationsLinks){
   svg.selectAll("*").remove();
   var nodes = cluster.nodes(rootCitation);
@@ -66,15 +68,20 @@ var generate_visualization = function(rootCitation, citationsLinks){
       .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
       .text(function(d) {
         var name = d.name;
-        // Deixa o titulo do artigo apenas a primeira letra em maiuscula
-        name = name.toLowerCase();
-        name = name.charAt(0).toUpperCase() + name.slice(1);
         if (name.length > 15)
           name = name.slice(0,13) + '...';
         return name;
       })
-      .on("mouseover", mouseover)
-      .on("mouseout", mouseout);
+      .on("mouseover", function(d) {
+        if (!selectedArticle) {
+            addColorToArticle(d);
+        }
+      })
+      .on("mouseout", function(d) {
+        if (!selectedArticle) {
+            removeColorFromArticle(d);
+        }
+      });
 
   for (var i = nodes.length - 1; i >= 0; i--) {
       var d = nodes[i];
@@ -86,11 +93,22 @@ var generate_visualization = function(rootCitation, citationsLinks){
         content: d.name,
         container: 'body',
         placement: 'auto',
-        trigger: 'manual'
+        trigger: 'hover'
       }).on('click', function(){
         var self = $(this);
+        var PMID = self.parent().attr('id').replace('node-', '');
+
+        if (selectedArticle === PMID) {
+            selectedArticle = null;
+            removeColorFromArticle({id: PMID});
+        } else {
+            selectedArticle = PMID;
+            addColorToArticle({id: PMID});
+        }
+
+        timeline.goToId(PMID);
+
         self.popover('show');
-        setTimeout(function(){self.popover("hide")}, 2000);
       });
     }
 };
@@ -141,9 +159,14 @@ function mouseup() {
   }
 }
 
-function mouseover(d) {
+function addColorToArticle(d) {
+  if (!articlesMap[d.id]) return;
+
   svg.selectAll("path.link")
     .classed("opaque", true);
+
+  svg.select("#node-" + d.id)
+    .classed("selected", true);
 
   svg.selectAll("path.link.source-" + d.id)
     .classed("source", true)
@@ -156,9 +179,14 @@ function mouseover(d) {
     .each(updateNodes("source", true));
 }
 
-function mouseout(d) {
+function removeColorFromArticle(d) {
+  if (!articlesMap[d.id]) return;
+
   svg.selectAll("path.link")
     .classed("opaque", false);
+
+  svg.select("#node-" + d.id)
+    .classed("selected", false);
 
   svg.selectAll("path.link.source-" + d.id)
     .classed("source", false)
@@ -186,22 +214,42 @@ function dot(a, b) {
 }
 
 var articlesMap = {};
+var articleYears = {};
 
 function addArticle(articles, articlePMID, rootCitation) {
     var article = articles[articlePMID];
 
     if (!articlesMap[articlePMID] && article) {
-        var obj = {
-            id: articlePMID,
-            name: article.year.concat(' - ',article.title),
-            citedBy: article.citedby,
-            children: [],
-            parent: rootCitation
+        var name = article.title;
+        if (article.year) {
+            name = article.year + ' - ' + name;
         }
 
-        rootCitation.children.push(obj);
+        var year = article.year ? article.year : 0;
+
+        if (!articleYears[year]) {
+            var yearObj = {
+                id: 'year',
+                name: year,
+                children: [],
+                parent: rootCitation
+            }
+
+            rootCitation.children.push(yearObj);
+            articleYears[year] = yearObj;
+        }
+
+        var obj = {
+            id: articlePMID,
+            name: name,
+            citedBy: article.citedby,
+            year: year,
+            children: [],
+            parent: articleYears[year]
+        }
 
         articlesMap[articlePMID] = obj;
+        articleYears[year].children.push(obj);
     }
 }
 
@@ -230,6 +278,17 @@ d3.json('/api/citations', function(articles) {
         }
     }
 
+    rootCitation.children.sort(function(a, b) {
+        if (parseInt(a.name) > parseInt(b.name)) {
+            return 1;
+        }
+
+        if (parseInt(a.name) < parseInt(b.name)) {
+            return -1;
+        }
+
+        return 0;
+    })
 
     for (var PMID in articlesMap) {
         var article = articlesMap[PMID];

@@ -56,7 +56,8 @@ hr {
 
 .circle-vis .node:hover,
 .circle-vis .node.target,
-.circle-vis .node.source {
+.circle-vis .node.source,
+.circle-vis .node.selected{
   font-weight: bold;
 }
 
@@ -64,6 +65,10 @@ hr {
 .circle-vis .node:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.circle-vis #node-year {
+  display: none;
 }
 
 .circle-vis .node.source {
@@ -76,8 +81,8 @@ hr {
 
 .circle-vis .link {
   fill: none;
-  stroke: #1f77b4;
-  stroke-opacity: 0.6;
+  stroke: #aaa;
+  stroke-opacity: 0.8;
   pointer-events: none;
 }
 
@@ -98,7 +103,7 @@ hr {
 
 .circle-vis .node.opaque,
 .circle-vis .link.opaque {
-  opacity: 0.1;
+  opacity: 0.2;
 }
 
 .circle-vis .node.out-time-frame,
