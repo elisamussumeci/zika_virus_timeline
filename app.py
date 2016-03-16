@@ -4,6 +4,7 @@ import datetime
 import json
 import pymongo
 import calendar
+import pandas as pd
 
 app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
@@ -64,6 +65,24 @@ def json_bundle():
                                             'link': get_link(article)['link']}
 
     return json.dumps(citations_dict), 200
+
+@app.route('/api/timeseries')
+def json_tseries():
+    col_art = mongo_client.pubmed.articles
+    articles = col_art.find({}, {'MedlineCitation.Article.Journal.JournalIssue.PubDate': 1,
+                                 'MedlineCitation.Article.ArticleTitle': 1})
+    dates_list = []
+    for article in articles:
+        date = article['MedlineCitation']['Article']['Journal']['JournalIssue']['PubDate']
+        if 'Year' in date:
+            dates_list.append({'date': datetime.date(int(date['Year']),
+                                                     month_calendar[date.get('Month', 'Jan')],
+                                                     int(date.get('Day', 1))),
+                               'count': 1})
+    df = pd.DataFrame(dates_list)
+    df = df.set_index(pd.DatetimeIndex(df['date']))
+    df = df['date'].resample('A', how='count')
+    return df.to_json(date_format='iso')
 
 
 @app.route('/api/publications')
