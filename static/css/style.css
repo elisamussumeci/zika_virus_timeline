@@ -34,6 +34,11 @@ hr {
   color: black;
 }
 
+#my-timeline.tl-timeline tl-layout-landscape {
+  width:100%;
+}
+
+
 .tl-timeline a:hover {
     text-decoration: none;
     color: #bbb
@@ -42,7 +47,9 @@ hr {
 
 #my-timeline {
   height: 500px;
+  width: 100%
 }
+
 
 .circle-vis-container {
   height: 550px;
