@@ -1,5 +1,5 @@
 $(function () {
-    $.getJSON('/api/timeseries', function (data) {
+    $.getJSON('/api/timeseries?disease='+disease, function (data) {
 
         final_data = [];
         for (var i in data) {

@@ -21,7 +21,7 @@
 <body>
 
 <nav class="navbar navbar-fixed-top">
-    <div class="container">
+    <div class="container">©
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                     aria-expanded="false" aria-controls="navbar">
@@ -76,8 +76,15 @@
 
     <hr>
 
-    <h3 class="title-section">Série Temporal</h3>
-    <div id="time-series">
+    <form id="search-form">
+      <input type="search-input"/>
+      <input type="submit" value="Buscar"/>
+    </form>
+
+    <hr>
+
+    <div id="time-series" class="container">
+        <h3 class="title-section">Série Temporal</h3>
         <div class="time-series"></div>
     </div>
 
@@ -104,9 +111,14 @@
 
     <footer>
         <p>&copy; 2016 NAMD</p>
+        <p></p>
     </footer>
 </div>
 <!-- /container -->
+
+
+
+
 
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap-3.0.0.min.js"></script>
@@ -116,6 +128,7 @@
 <script type="text/javascript" src="/static/js/exporting.js"></script>
 
 
+<script type="text/javascript" src="/static/js/context.js"></script>
 <script type="text/javascript" src="/static/js/timeline-vis.js"></script>
 <script type="text/javascript" src="/static/js/circle-vis.js"></script>
 <script type="text/javascript" src="/static/js/interactive.js"></script>
