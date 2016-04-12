@@ -11,7 +11,7 @@ app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC = os.path.join(APP_ROOT, 'static')
 
-mongo_client = pymongo.MongoClient('localhost', 27017)
+mongo_client = pymongo.MongoClient('172.16.4.51', 27017)
 
 month_calendar = dict((v,k) for k,v in enumerate(calendar.month_abbr))
 disease_collection = {'articles': {'zika': 'articles',
@@ -106,8 +106,16 @@ def json_tseries():
 
 @app.route('/api/publications')
 def json_timeline():
-    col = mongo_client.pubmed.articles
-    articles = list(col.find())
+    disease = request.args.get('disease')
+    search = request.args.get('search')
+    col = mongo_client['pubmed']['articles']
+
+    if not search:
+        query = {}
+    else:
+        query = {"$text": {"$search": search}}
+
+    articles = list(col.find(query))
 
     valid_articles = []
     for art in articles:
