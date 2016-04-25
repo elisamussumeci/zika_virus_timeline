@@ -1,7 +1,7 @@
 FROM debian
 
 RUN apt-get update
-RUN apt-get install -y git python-pip
+RUN apt-get install -y git python-pip python-dev
 
 # Clone code
 RUN git clone https://github.com/elisamussumeci/zika_virus_timeline.git /srv/zika_virus_timeline/
