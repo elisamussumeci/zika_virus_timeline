@@ -29,7 +29,7 @@ def get_link(art):
     article_id_list.sort(key=len)
 
     if '/' in article_id_list[-1]:
-        art['link'] = 'http://dx.doi.org/'+article_id_list[-1]
+        art['link'] = 'https://doi.org/'+article_id_list[-1]
     else:
         art['link'] = None
     return art
