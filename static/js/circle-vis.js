@@ -258,7 +258,7 @@ function addArticle(articles, articlePMID, rootCitation) {
 }
 
 // Start
-d3.json('/api/citations', function(articles) {
+d3.json('/api/citations'+contextQueryString, function(articles) {
     // Nos vamos guardar os pares de citacoes aqui
     var citationsLinks = [];
 

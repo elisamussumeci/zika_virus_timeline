@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 import os
 import datetime
 import json
@@ -13,6 +13,17 @@ APP_STATIC = os.path.join(APP_ROOT, 'static')
 
 mongo_client = pymongo.MongoClient('172.16.4.51', 27017)
 
+month_calendar = dict((v,k) for k,v in enumerate(calendar.month_abbr))
+disease_collection = {'articles': {'zika': 'articles',
+                                   'mers': 'mers',
+                                   'mayaro': 'mayaro',
+                                   'oropouche': 'oropouche'},
+                      'citations': {'zika': 'citations',
+                                    'mers': 'citations_mers',
+                                    'mayaro': 'citations_mayaro',
+                                    'oropouche': 'citations_oropouche'}}
+
+
 def fix_abstract(art):
     if 'Abstract' not in art['MedlineCitation']['Article'] or art['MedlineCitation']['Article']['Abstract'] == "":
         art['MedlineCitation']['Article']['Abstract'] = {'AbstractText':  " "}
@@ -20,8 +31,6 @@ def fix_abstract(art):
         art['MedlineCitation']['Article']['Abstract']['AbstractText'] = art['MedlineCitation']['Article']['Abstract']['AbstractText'][0]
 
     return art
-
-month_calendar = dict((v,k) for k,v in enumerate(calendar.month_abbr))
 
 
 def get_link(art):
@@ -68,9 +77,19 @@ def json_bundle():
 
 @app.route('/api/timeseries')
 def json_tseries():
-    col_art = mongo_client.pubmed.articles
-    articles = col_art.find({}, {'MedlineCitation.Article.Journal.JournalIssue.PubDate': 1,
-                                 'MedlineCitation.Article.ArticleTitle': 1})
+    disease = request.args.get('disease')
+    search = request.args.get('search')
+    col_art = mongo_client['pubmed']['articles']
+
+    if not search:
+        query = {}
+    else:
+        query = {"$text": {"$search": search}}
+
+
+    articles = col_art.find(query,
+                            {'MedlineCitation.Article.Journal.JournalIssue.PubDate': 1,
+                             'MedlineCitation.Article.ArticleTitle': 1})
     dates_list = []
     for article in articles:
         date = article['MedlineCitation']['Article']['Journal']['JournalIssue']['PubDate']
@@ -87,8 +106,16 @@ def json_tseries():
 
 @app.route('/api/publications')
 def json_timeline():
-    col = mongo_client.pubmed.articles
-    articles = list(col.find())
+    disease = request.args.get('disease')
+    search = request.args.get('search')
+    col = mongo_client['pubmed']['articles']
+
+    if not search:
+        query = {}
+    else:
+        query = {"$text": {"$search": search}}
+
+    articles = list(col.find(query))
 
     valid_articles = []
     for art in articles:

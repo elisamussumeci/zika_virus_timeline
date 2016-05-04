@@ -53,12 +53,12 @@
                 },
                 {%if art.link is none %}
                     "text": {
-                        "headline": "{{art.MedlineCitation.Article.ArticleTitle}}",
+                        "headline": "{{art.MedlineCitation.Article.ArticleTitle|e}}",
                         "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
                     },
                 {%else%}
                     "text": {
-                        "headline": "<a href={{art.link}} target='_blank'>{{art.MedlineCitation.Article.ArticleTitle}}</a>",
+                        "headline": "<a href={{art.link}} target='_blank'>{{art.MedlineCitation.Article.ArticleTitle|e}}</a>",
                         "text": "{{art.MedlineCitation.Article.Abstract.AbstractText|forceescape|truncate}}"
                     },
                 {% endif %}
