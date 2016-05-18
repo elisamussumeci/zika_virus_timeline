@@ -4,8 +4,8 @@
                 "credit": "NAMD"
             },
             "text":{
-                "headline": "Timeline de Publicações",
-                "text": "Linha do tempo com artigos sobre {{busca}}"
+                "headline": "Publication Timeline",
+                "text": "Article timeline for {{busca}}"
             }
 
     },
