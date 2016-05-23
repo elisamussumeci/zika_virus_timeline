@@ -12,7 +12,7 @@ $(function () {
                 renderTo: 'time-series'
             },
             title: {
-                text: 'Série Temporal'
+                text: 'Time Series'
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
